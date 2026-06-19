@@ -49,7 +49,7 @@ interface ReservationResult {
 
 //----------------------------------------
 
-const TIMER_DURATION = 600; // 10 minutes
+const TIMER_DURATION = 5; // 10 minutes
 
 const SMART_LETTER_COLORS = ["#E53935", "#F57C00", "#F9A825", "#388E3C", "#1565C0"];
 
@@ -92,12 +92,15 @@ function useReservation(): ReservationResult {
   const requestPendingRef = useRef(false);
 
   const clearTimer = useCallback(() => {
-    if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
+    if (timerRef.current) { 
+      clearInterval(timerRef.current); 
+      timerRef.current = null; }
   }, []);
 
   useEffect(() => () => { clearTimer(); }, [clearTimer]);
 
-  // Firebase listener
+  //-----------------------------------------------
+
   useEffect(() => {
     const reservationsRef = dbRef(db, "reservations");
 
@@ -105,6 +108,7 @@ function useReservation(): ReservationResult {
       const p = snap.val();
       if (!p) return;
       const { token, status, spotId } = { token: p.token, status: p.status, spotId: p.spotId || p.bay || null };
+
       try {
         window.dispatchEvent(new CustomEvent("smartparking:reservation", {
           detail: { action: status === "RESERVED" ? "reserved" : status === "OCCUPIED" ? "occupied" : status === "EXPIRED" ? "expired" : "reset", token, zone: p.zone, spotId },
@@ -125,15 +129,30 @@ function useReservation(): ReservationResult {
       const p = snap.val();
       if (!p) return;
       const { token, status, spotId } = { token: p.token, status: p.status, spotId: p.spotId || p.bay || null };
+
       try {
         window.dispatchEvent(new CustomEvent("smartparking:reservation", {
           detail: { action: status === "RESERVED" ? "reserved" : status === "OCCUPIED" ? "occupied" : status === "EXPIRED" ? "expired" : "reset", token, zone: p.zone, spotId },
         }));
       } catch (_) {}
+
       if (token && tokenRef.current === token) {
-        if (status === "OCCUPIED") { clearTimer(); setStatus("OCCUPIED"); }
-        else if (status === "EXPIRED") { clearTimer(); setStatus("EXPIRED"); tokenRef.current = null; setReservedSpot(null); }
-        else if (status === "RESET")   { clearTimer(); setStatus("IDLE");   tokenRef.current = null; setReservedSpot(null); }
+        if (status === "OCCUPIED") { 
+          clearTimer(); 
+          setStatus("OCCUPIED"); 
+        }
+        else if (status === "EXPIRED") { 
+          clearTimer(); 
+          setStatus("EXPIRED"); 
+          tokenRef.current = null; 
+          setReservedSpot(null); 
+        }
+        else if (status === "RESET")   { 
+          clearTimer(); 
+          setStatus("IDLE");   
+          tokenRef.current = null; 
+          setReservedSpot(null); 
+        }
       }
     };
 
@@ -142,18 +161,31 @@ function useReservation(): ReservationResult {
     return () => { try { off(reservationsRef); } catch (_) {} };
   }, [clearTimer]);
 
-  // Countdown tick
+  //-----------------------------------------------expired parrking timer countdown
+
   useEffect(() => {
-    if (status !== "RESERVED") return;
+    if (status !== "RESERVED") {
+      return; }
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
           clearTimer();
           setStatus("EXPIRED");
+          const expiredToken = tokenRef.current;
           if (spotRef.current) {
-            setSpots((s) => s.map((sp) => sp.id === spotRef.current!.id ? { ...sp, state: "AVAILABLE" } : sp));
+            setSpots((s) => s.map((sp) => sp.id === spotRef.current?.id ? { ...sp, state: "AVAILABLE" } : sp));
           }
-          try { window.dispatchEvent(new CustomEvent("smartparking:reservation", { detail: { action: "expired", token: tokenRef.current } })); } catch (_) {}
+          try {
+            window.dispatchEvent(new CustomEvent("smartparking:reservation", {
+              detail: { 
+                action: "expired", 
+                token: expiredToken},
+            })); } catch (_) {}
+          if (expiredToken) {
+            dbUpdate(dbRef(db, `reservations/${expiredToken}`), { 
+              status: "EXPIRED" 
+            }).catch(() => {});
+          }
           return 0;
         }
         return prev - 1;
@@ -164,64 +196,104 @@ function useReservation(): ReservationResult {
 
   //-----------------------------------------------
 
-const reserveSpot = useCallback(async (spotId: string) => {
+    const reserveSpot = useCallback(async (spotId: string) => {
 
-  const available = spots.find((s) => s.id === spotId && s.state === "AVAILABLE");
-  if (!available) {
-    setStatus("FULL");
-    requestPendingRef.current = false;
-    return;
-  }
+    const available = spots.find((s) => s.id === spotId && s.state === "AVAILABLE");
+    if (!available) {
+      setStatus("FULL");
+      requestPendingRef.current = false;
+      return;
+    }
 
-  const token = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-  const reserved: HookParkingSpot = { ...available, state: "RESERVED" };
+    const token = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    const reserved: HookParkingSpot = { ...available, state: "RESERVED" };
 
-  try {
-    tokenRef.current = token; 
-    spotRef.current = reserved;
-    setSpots((prev) => prev.map((sp) => sp.id === available.id ? reserved : sp));
-    setReservedSpot(reserved);
-    setTimeLeft(TIMER_DURATION);
-    setStatus("RESERVED");
+    try {
+      tokenRef.current = token; 
+      spotRef.current = reserved;
+      setSpots((prev) => prev.map((sp) => sp.id === available.id ? reserved : sp));
+      setReservedSpot(reserved);
+      setTimeLeft(TIMER_DURATION);
+      setStatus("RESERVED");
 
-    window.dispatchEvent(new CustomEvent("smartparking:reservation", { 
-      detail: { action: "reserved", token, spotId: reserved.id } 
-    }));
+      window.dispatchEvent(new CustomEvent("smartparking:reservation", { 
+        detail: { 
+          action: "reserved", 
+          token, 
+          spotId: reserved.id } 
+      }));
 
-    await dbSet(dbRef(db, `reservations/${token}`), {
-      token,
-      spotId: reserved.id,
-      status: "RESERVED",
-      expiresAt: Date.now() + TIMER_DURATION * 1000,
-    });
+      await dbSet(dbRef(db, `reservations/${token}`), {
+        token,
+        spotId: reserved.id,
+        status: "RESERVED",
+        expiresAt: Date.now() + TIMER_DURATION * 1000,
+      });
 
-  } finally {
-    requestPendingRef.current = false;
-  }
-}, [spots]);
+    } finally {
+      requestPendingRef.current = false;
+     }
+  }, [spots]);
 
-//---------------------------------------------------------------
+  //---------------------------------------------------------------simulate sensor trigger car is parked
 
   const simulateSensor = useCallback(async () => {
     const currentSpotId = spotRef.current?.id;
     const currentToken  = tokenRef.current;
-    if (!currentSpotId) return;
+
+    if (!currentSpotId) 
+      return;
+
     clearTimer();
-    setStatus((prev) => { if (prev !== "RESERVED") console.warn("[simulateSensor] unexpected status:", prev); return "OCCUPIED"; });
+
+    setStatus((prev) => { 
+      if (prev !== "RESERVED"){
+        console.warn("[simulateSensor] unexpected status:", prev);}
+      return "OCCUPIED"; });
+
     setSpots((s) => s.map((sp) => sp.id === currentSpotId ? { ...sp, state: "OCCUPIED" } : sp));
-    try { window.dispatchEvent(new CustomEvent("smartparking:reservation", { detail: { action: "occupied", token: currentToken, spotId: currentSpotId } })); } catch (_) {}
-    if (currentToken) { try { await dbUpdate(dbRef(db, `reservations/${currentToken}`), { status: "OCCUPIED" }); } catch (_) {} }
+
+    try { 
+      window.dispatchEvent(new CustomEvent("smartparking:reservation", { 
+        detail: { 
+          action: "occupied", 
+          token: currentToken, 
+          spotId: currentSpotId } })); 
+        } catch (_) {}
+
+    if (currentToken) { 
+      try { 
+        await dbUpdate(dbRef(db, `reservations/${currentToken}`), 
+        { status: "OCCUPIED" }); 
+      } catch (_) {} 
+    }
   }, [clearTimer]);
+
+  //---------------------------------------------------------------simulate car leaving the spot
 
   const simulateLeave = useCallback(async () => {
     const currentSpotId = spotRef.current?.id;
     const currentToken  = tokenRef.current;
-    if (!currentSpotId) { console.warn("[simulateLeave] no spotRef, aborting"); return; }
+    if (!currentSpotId) { 
+      console.warn("[simulateLeave] no spotRef, aborting"); 
+      return; }
     setStatus(() => "LEFT");
     setSpots((s) => s.map((sp) => sp.id === currentSpotId ? { ...sp, state: "AVAILABLE" } : sp));
-    try { window.dispatchEvent(new CustomEvent("smartparking:reservation", { detail: { action: "left", token: currentToken, spotId: currentSpotId } })); } catch (_) {}
-    if (currentToken) { try { await dbUpdate(dbRef(db, `reservations/${currentToken}`), { status: "LEFT" }); } catch (_) {} }
+    try { 
+      window.dispatchEvent(new CustomEvent("smartparking:reservation", { 
+        detail: { 
+          action: "left", 
+          token: currentToken, 
+          spotId: currentSpotId } })); 
+        } catch (_) {}
+    if (currentToken) { 
+      try { 
+        await dbUpdate(dbRef(db, `reservations/${currentToken}`), 
+        { status: "LEFT" }); 
+      } catch (_) {} }
   }, []);
+
+  //---------------------------------------------------------------
 
   const reset = useCallback(async () => {
     clearTimer();
@@ -707,7 +779,7 @@ interface ReservedParkingProps {
   onNoticeClick: () => void;
 }
 
-export default function ReservedParking({ onNoticeClick }: ReservedParkingProps) {
+export default function ReservedParking({ }: ReservedParkingProps) {
   const [vehicle, setVehicle] = useState("");
   const [showMap, setShowMap] = useState(false);
   const [vehicleWarning, setVehicleWarning] = useState(false);
@@ -799,14 +871,9 @@ export default function ReservedParking({ onNoticeClick }: ReservedParkingProps)
               </button>
             </div>
           </div>
-          <div className="sp-banner" onClick={onNoticeClick}>
-            <span style={{ fontSize: 18 }}>📢</span>
-            <span className="sp-banner__text">Parking rate update effective 1 July 2026 — tap to read more</span>
-          </div>
         </div>
       )}
 
-      {/* Fixed modal implementation */}
       {showMap && (
         <div className="sp-map-modal-overlay">
           <div className="sp-map-modal-content">
