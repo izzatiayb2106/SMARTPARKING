@@ -49,7 +49,7 @@ interface ReservationResult {
 
 //----------------------------------------
 
-const TIMER_DURATION = 5; // 10 minutes
+const TIMER_DURATION = 600; // 10 minutes
 
 const SMART_LETTER_COLORS = ["#E53935", "#F57C00", "#F9A825", "#388E3C", "#1565C0"];
 
