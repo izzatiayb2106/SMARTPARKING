@@ -801,7 +801,7 @@ export default function ReservedParking({ }: ReservedParkingProps) {
         <button className="sp-icon-btn" onClick={showFlow ? handleReset : undefined}>
           <BackIcon />
         </button>
-        <span className="sp-header__title">Smart Parking</span>
+        <span className="sp-header__title">Smart Parking System</span>
         <div className="sp-header__actions">
           <button className="sp-icon-btn"><ReceiptIcon /></button>
           <button className="sp-icon-btn"><HelpIcon /></button>

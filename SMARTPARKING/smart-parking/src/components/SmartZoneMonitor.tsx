@@ -379,7 +379,7 @@ export default function SmartZoneMonitor({ onBack }: SmartZoneMonitorProps) {
         <button className="sp-icon-btn--ghost" onClick={onBack}>
           <BackIcon />
         </button>
-        <span className="sp-header__title">Smart Zone Monitor</span>
+        <span className="sp-header__title">EV Smart Zone</span>
         <div className="sp-spacer" />
       </div>
 

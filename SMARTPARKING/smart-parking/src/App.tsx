@@ -31,7 +31,7 @@ export default function App() {
           onClick={() => setPage("smartzone")}
         >
           <span className="sp-tab__icon"><BellIcon /></span>
-          <span className="sp-tab__label">Smart Zone</span>
+          <span className="sp-tab__label">EV Smart Zone</span>
         </button>
       </div>
     </div>
