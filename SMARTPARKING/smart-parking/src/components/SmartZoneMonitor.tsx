@@ -512,7 +512,7 @@ export default function SmartZoneMonitor({ onBack }: SmartZoneMonitorProps) {
                   disabled={!canControlSelectedBay || selectedBayState?.spotStatus !== "PENDING_VALIDATION"}
                 >
                   <span className="szm-ctrl-btn__icon">📱</span>
-                  <span className="szm-ctrl-btn__label">User Validates App</span>
+                  <span className="szm-ctrl-btn__label">User Scan QR Code</span>
                   <span className="szm-ctrl-btn__sub">EV ownership confirmed</span>
                 </button>
 
@@ -566,8 +566,8 @@ export default function SmartZoneMonitor({ onBack }: SmartZoneMonitorProps) {
         type={selectedBayState?.activeAlert === "UNAUTHORIZED_ALERT" ? "unauthorized" : "overstay"}
         message={
           selectedBayState?.activeAlert === "UNAUTHORIZED_ALERT"
-            ? "Vehicle has not validated EV ownership within 2 minutes. Security has been notified."
-            : "Vehicle has exceeded the 2-hour EV charging limit. Penalty notification sent to driver."
+            ? "Vehicle has not validated EV ownership within 3 minutes. Security staff has been notified."
+            : "Vehicle has exceeded the 2-hour EV charging limit. Idle fees has been applied."
         }
         onDismiss={() => {
           if (!selectedBay) return;
