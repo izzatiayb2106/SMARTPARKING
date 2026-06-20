@@ -831,7 +831,6 @@
   color: #E53935;
 }
 
-/* Modal Body - Scrollable */
 .sp-map-modal-body {
   flex: 1;
   overflow-y: auto;
@@ -839,7 +838,6 @@
   background: #1a1a2e;
 }
 
-/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -860,7 +858,6 @@
   }
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .sp-map-modal-content {
     width: 100%;

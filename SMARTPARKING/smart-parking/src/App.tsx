@@ -9,15 +9,15 @@ type Page = "reserved" | "smartzone";
 export default function App() {
   const [page, setPage] = useState<Page>("reserved");
 
-  if (page === "smartzone") {
-    return <SmartZoneMonitor onBack={() => setPage("reserved")} />;
-  }
-
   return (
     <div>
-      <ReservedParking onNoticeClick={() => setPage("smartzone")} />
+      {page === "reserved" && (
+        <ReservedParking onNoticeClick={() => setPage("smartzone")} />
+      )}
+      {page === "smartzone" && (
+        <SmartZoneMonitor onBack={() => setPage("reserved")} />
+      )}
 
-      {/* Bottom tab bar */}
       <div className="sp-tabs" style={{ margin: "0 16px 16px", position: "sticky", bottom: 16 }}>
         <button
           className={`sp-tab ${page === "reserved" ? "sp-tab--active" : ""}`}

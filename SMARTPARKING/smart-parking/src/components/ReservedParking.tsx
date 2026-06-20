@@ -22,7 +22,7 @@ export type ReservationStatus =
   | "EXPIRED"
   | "LEFT";
 
-export type SpotStatus = "available" | "occupied" | "reserved" | "disabled";
+export type SpotStatus = "available" | "occupied" | "reserved" | "electric vehicle";
 
 export interface HookParkingSpot {
   id: string;
@@ -57,14 +57,14 @@ const CAR_COLORS: Record<SpotStatus, string> = {
   occupied:  "#E53935",
   reserved:  "#F57C00",
   available: "transparent",
-  disabled:  "transparent",
+  "electric vehicle":  "transparent",
 };
 
 const SPOT_BG: Record<SpotStatus, string> = {
   available: "#2E7D32",
   occupied:  "#B71C1C",
   reserved:  "#E65100",
-  disabled:  "#37474F",
+  "electric vehicle":  "#37474F",
 };
 
 //----------------------------------------
@@ -444,7 +444,7 @@ function generateMapSpots(level: number): MapParkingSpot[] {
       const key = `${row}${col}`;
       const code = `L${level}-${row}${col}`;
       let status: SpotStatus = "available";
-      if (row === "A" && col === 1 && level === 1) status = "disabled";
+      if (row === "A" && col === 1 && level === 1) status = "electric vehicle";
       spots.push({ id: `L${level}-${key}`, code, status, level });
     }
   });
@@ -485,8 +485,8 @@ function SpotCell({ spot, onClick }: { spot: MapParkingSpot; onClick: (s: MapPar
       tabIndex={isClickable ? 0 : -1}
       onKeyDown={(e) => e.key === "Enter" && isClickable && onClick(spot)}
     >
-      {spot.status === "disabled" ? (
-        <span className="pm-spot__wheelchair">♿</span>
+      {spot.status === "electric vehicle" ? (
+        <span className="pm-spot__ev">🔋</span>
       ) : spot.status !== "available" ? (
         <CarTopDown color={CAR_COLORS[spot.status]} />
       ) : null}
@@ -500,7 +500,7 @@ function MapLegend() {
     { status: "available", label: "Available" },
     { status: "occupied",  label: "Occupied"  },
     { status: "reserved",  label: "Reserved"  },
-    { status: "disabled",  label: "Disabled"  },
+    { status: "electric vehicle",  label: "Electric Vehicle"  },
   ];
   return (
     <div className="pm-legend">
@@ -518,7 +518,7 @@ function LevelView({ level, spots, onSpotClick }: { level: number; spots: MapPar
   const rows = ["A", "B", "C", "D"];
   const cols = 6;
   const available = spots.filter((s) => s.status === "available").length;
-  const total     = spots.filter((s) => s.status !== "disabled").length;
+  const total     = spots.filter((s) => s.status !== "electric vehicle").length;
   return (
     <div className="pm-level">
       <div className="pm-level__header">
@@ -677,7 +677,7 @@ function ParkingMap({ onSelect }: { onSelect?: (spot: MapParkingSpot) => void })
 
   const levelSpots = spots;
   const totalAvail = spots.filter((s) => s.status === "available").length;
-  const totalSpots = spots.filter((s) => s.status !== "disabled").length;
+  const totalSpots = spots.filter((s) => s.status !== "electric vehicle").length;
 
   const handleSpotClick = (clicked: MapParkingSpot) => {
     if (clicked.status !== "available") return;
