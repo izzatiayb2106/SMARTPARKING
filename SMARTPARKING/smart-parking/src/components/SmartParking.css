@@ -512,6 +512,11 @@
   color: #1565c0;
 }
 
+.szm-badge--complete {
+  background: #fff3e0;
+  color: #ef6c00;
+}
+
 .szm-badge--occupied {
   background: #fce4ec;
   color: #c62828;
@@ -549,8 +554,12 @@
   border-color: #ffe082;
 }
 
+.szm-timer-card--charging {
+  border-color: #80cbc4;
+}
+
 .szm-timer-card--overstay {
-  border-color: #90caf9;
+  border-color: #ffb74d;
 }
 
 .szm-timer-card--urgent {
@@ -922,6 +931,29 @@
 
 .szm-bay-btn--active .szm-bay-btn__level {
   color: #1565c0;
+}
+
+.szm-bay-btn--occupied {
+  opacity: 0.76;
+  cursor: not-allowed;
+  border-color: #ef9a9a;
+  background: #ffebee;
+}
+
+.szm-bay-btn:disabled {
+  pointer-events: none;
+}
+
+.szm-bay-btn__status {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: #b71c1c;
+  border: 1px solid #ef9a9a;
+  background: #fff5f5;
+  border-radius: 999px;
+  padding: 3px 8px;
 }
 
 /* ----- Fee Info Card ----- */
