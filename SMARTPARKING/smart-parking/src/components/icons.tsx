@@ -59,3 +59,14 @@ export const ChevronDownIcon = () => (
     <polyline points="6 9 12 15 18 9" />
   </svg>
 );
+
+// A radar/signal icon
+export const RadarIcon = () => (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="3" />
+      <path d="M6.3 6.3a8 8 0 0 0 0 11.4" />
+      <path d="M17.7 6.3a8 8 0 0 1 0 11.4" />
+      <path d="M3.5 3.5a14 14 0 0 0 0 17" />
+      <path d="M20.5 3.5a14 14 0 0 1 0 17" />
+  </svg>
+);
