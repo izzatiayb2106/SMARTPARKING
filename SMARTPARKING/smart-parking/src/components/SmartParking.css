@@ -434,3 +434,604 @@
 .sp-spacer {
   width: 32px;
 }
+
+
+/* =========================================
+   SmartZoneMonitor — component styles
+   ========================================= */
+
+/* ----- Bay Card ----- */
+.szm-bay-card {
+  margin-bottom: 12px;
+}
+
+.szm-bay-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.szm-bay-label {
+  font-size: 12px;
+  color: #999;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+
+.szm-bay-id {
+  font-size: 22px;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.szm-bay-icon-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.szm-ev-icon {
+  font-size: 36px;
+  line-height: 1;
+}
+
+.szm-bay-sublabel {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ----- Status Badge ----- */
+.szm-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.szm-badge--available {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.szm-badge--pending {
+  background: #fff8e1;
+  color: #f57c00;
+}
+
+.szm-badge--charging {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.szm-badge--complete {
+  background: #fff3e0;
+  color: #ef6c00;
+}
+
+.szm-badge--occupied {
+  background: #fce4ec;
+  color: #c62828;
+}
+
+/* ----- Section label ----- */
+.szm-section-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #888;
+  letter-spacing: 0.4px;
+  margin: 0 0 10px;
+  padding-left: 2px;
+}
+
+/* ----- Timer Cards ----- */
+.szm-timer-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.szm-timer-card {
+  flex: 1;
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  text-align: center;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.szm-timer-card--validation {
+  border-color: #ffe082;
+}
+
+.szm-timer-card--charging {
+  border-color: #80cbc4;
+}
+
+.szm-timer-card--overstay {
+  border-color: #ffb74d;
+}
+
+.szm-timer-card--urgent {
+  border-color: #e53935 !important;
+  animation: szm-pulse 1s ease-in-out infinite;
+}
+
+@keyframes szm-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.7; }
+}
+
+.szm-timer-card__label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #999;
+  margin: 0 0 6px;
+}
+
+.szm-timer-card__time {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin: 0 0 4px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -1px;
+}
+
+.szm-timer-card--urgent .szm-timer-card__time {
+  color: #e53935;
+}
+
+.szm-timer-card__hint {
+  font-size: 11px;
+  color: #bbb;
+  margin: 0;
+}
+
+/* ----- Alert Banner ----- */
+.szm-alert {
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.szm-alert--unauthorized {
+  background: #ffebee;
+  border: 1.5px solid #ef9a9a;
+}
+
+.szm-alert--overstay {
+  background: #fff3e0;
+  border: 1.5px solid #ffcc80;
+}
+
+.szm-alert__icon {
+  font-size: 22px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.szm-alert__body {
+  flex: 1;
+}
+
+.szm-alert__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 4px;
+}
+
+.szm-alert__desc {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ----- Simulation Controls ----- */
+.szm-controls-card {
+  margin-bottom: 12px;
+}
+
+.szm-controls-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 4px;
+}
+
+.szm-controls-hint {
+  font-size: 12px;
+  color: #aaa;
+  margin: 0 0 16px;
+}
+
+.szm-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.szm-ctrl-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1.5px solid #e0e0e0;
+  background: #fafafa;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+}
+
+.szm-ctrl-btn:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+.szm-ctrl-btn:not(:disabled):hover {
+  background: #f5f5f5;
+}
+
+.szm-ctrl-btn--detect:not(:disabled) {
+  border-color: #a5d6a7;
+  background: #f1f8f2;
+}
+
+.szm-ctrl-btn--validate:not(:disabled) {
+  border-color: #90caf9;
+  background: #f0f7ff;
+}
+
+.szm-ctrl-btn--clear:not(:disabled) {
+  border-color: #ef9a9a;
+  background: #fff5f5;
+}
+
+.szm-ctrl-btn__icon {
+  font-size: 22px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.szm-ctrl-btn__label {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  display: block;
+}
+
+.szm-ctrl-btn__sub {
+  font-size: 11px;
+  color: #aaa;
+  font-family: monospace;
+}
+
+/* ----- Debug Panel ----- */
+.szm-debug-panel {
+  background: #1e1e2e;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.szm-debug-panel__title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #888;
+  margin: 0 0 12px;
+}
+
+.szm-debug-panel__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.szm-debug-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.szm-debug-key {
+  font-size: 12px;
+  color: #7c85b3;
+  font-family: monospace;
+}
+
+.szm-debug-val {
+  font-size: 12px;
+  color: #a8ff78;
+  font-family: monospace;
+  font-weight: 600;
+}
+
+
+/* ----- Floating Overstay Alert Popup ----- */
+.szm-floating-alert {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  width: calc(100% - 32px);
+  max-width: 400px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0,0,0,0.10);
+  border-left: 5px solid #f57c00;
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 999;
+}
+
+.szm-floating-alert--unauthorized {
+  border-left-color: #e53935;
+}
+
+.szm-floating-alert--unauthorized .szm-floating-alert__icon-wrap {
+  background: #ffebee;
+}
+
+.szm-floating-alert--unauthorized .szm-floating-alert__label {
+  color: #e53935;
+}
+
+.szm-floating-alert--visible {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(-50%) translateY(0);
+}
+
+.szm-floating-alert__icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fff3e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.szm-floating-alert__icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.szm-floating-alert__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.szm-floating-alert__label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #f57c00;
+  margin: 0 0 2px;
+  text-transform: uppercase;
+}
+
+.szm-floating-alert__bay {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 4px;
+}
+
+.szm-floating-alert__msg {
+  font-size: 12px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.szm-floating-alert__dismiss {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #bbb;
+  font-size: 16px;
+  padding: 0 0 0 4px;
+  flex-shrink: 0;
+  line-height: 1;
+  align-self: flex-start;
+}
+
+.szm-floating-alert__dismiss:hover {
+  color: #888;
+}
+
+
+/* ----- Bay Selector Card ----- */
+.szm-selector-card {
+  margin-bottom: 12px;
+}
+
+.szm-selector-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 12px;
+}
+
+.szm-bay-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.szm-bay-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1.5px solid #e0e0e0;
+  background: #fafafa;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.szm-bay-btn--active {
+  border-color: #1565c0;
+  background: #e3f2fd;
+}
+
+.szm-bay-btn__icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.szm-bay-btn__label {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.szm-bay-btn--active .szm-bay-btn__label {
+  color: #1565c0;
+}
+
+.szm-bay-btn__level {
+  font-size: 12px;
+  color: #aaa;
+  font-weight: 500;
+}
+
+.szm-bay-btn--active .szm-bay-btn__level {
+  color: #1565c0;
+}
+
+.szm-bay-btn--occupied {
+  opacity: 0.76;
+  cursor: not-allowed;
+  border-color: #ef9a9a;
+  background: #ffebee;
+}
+
+.szm-bay-btn:disabled {
+  pointer-events: none;
+}
+
+.szm-bay-btn__status {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: #b71c1c;
+  border: 1px solid #ef9a9a;
+  background: #fff5f5;
+  border-radius: 999px;
+  padding: 3px 8px;
+}
+
+/* ----- Fee Info Card ----- */
+.szm-fee-card {
+  margin-bottom: 12px;
+}
+
+.szm-fee-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.szm-fee-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 12px;
+}
+
+.szm-fee-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.szm-fee-item__icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.szm-fee-item__label {
+  font-size: 11px;
+  color: #999;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin: 0 0 2px;
+}
+
+.szm-fee-item__rate {
+  font-size: 22px;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin: 0;
+  line-height: 1;
+}
+
+.szm-fee-item__unit {
+  font-size: 13px;
+  font-weight: 500;
+  color: #888;
+}
+
+.szm-fee-divider {
+  width: 1px;
+  height: 44px;
+  background: #e0e0e0;
+  margin: 0 16px;
+  flex-shrink: 0;
+}
+
+.szm-fee-note {
+  font-size: 11px;
+  color: #aaa;
+  margin: 0;
+  line-height: 1.5;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 10px;
+}
+
+/* ----- Bay level sub-label ----- */
+.szm-bay-level {
+  font-size: 12px;
+  color: #aaa;
+  margin: 2px 0 0;
+}
